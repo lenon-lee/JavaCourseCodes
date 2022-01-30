@@ -10,6 +10,13 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.ReferenceCountUtil;
 
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.HttpResponse;
+import org.apache.http.impl.client.HttpClients;
+
+import java.util.Scanner;
+
 import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE;
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
@@ -51,6 +58,19 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
 //            httpGet ...  http://localhost:8801
 //            返回的响应，"hello,nio";
 //            value = reponse....
+// 第三周作业第一道
+            // 创建一个HttpClient对象
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+            // 创建一个httpGet对象
+            HttpGet httpget = new HttpGet("http://localhost:8801");
+            HttpResponse httpresponse = httpclient.execute(httpget);
+            Scanner sc = new Scanner(httpresponse.getEntity().getContent());
+            StringBuilder sb = new StringBuilder();
+            while (sc.hasNext()) {
+                sb.append(sc.nextLine() + "\n");
+            }
+            value = sb.toString();
+            System.out.println(value);
 
             response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes("UTF-8")));
             response.headers().set("Content-Type", "application/json");
