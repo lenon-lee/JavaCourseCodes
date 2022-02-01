@@ -12,9 +12,10 @@ import io.netty.util.ReferenceCountUtil;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
@@ -52,6 +53,11 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
 
     private void handlerTest(FullHttpRequest fullRequest, ChannelHandlerContext ctx, String body) {
         FullHttpResponse response = null;
+        // 创建一个HttpClient对象
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        // 创建一个httpGet对象
+        HttpGet httpget = new HttpGet("http://localhost:8801");
+        CloseableHttpResponse httpresponse = null;
         try {
             String value = body; // 对接上次作业的httpclient或者okhttp请求另一个url的响应数据
 
@@ -59,11 +65,7 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
 //            返回的响应，"hello,nio";
 //            value = reponse....
 // 第三周作业第一道
-            // 创建一个HttpClient对象
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            // 创建一个httpGet对象
-            HttpGet httpget = new HttpGet("http://localhost:8801");
-            HttpResponse httpresponse = httpclient.execute(httpget);
+            httpresponse = httpclient.execute(httpget);
             Scanner sc = new Scanner(httpresponse.getEntity().getContent());
             StringBuilder sb = new StringBuilder();
             while (sc.hasNext()) {
@@ -80,6 +82,15 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
             System.out.println("处理出错:"+e.getMessage());
             response = new DefaultFullHttpResponse(HTTP_1_1, NO_CONTENT);
         } finally {
+            try {
+                if (httpresponse != null){
+                    httpresponse.close();
+                }
+                httpget.releaseConnection();
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (fullRequest != null) {
                 if (!HttpUtil.isKeepAlive(fullRequest)) {
                     ctx.write(response).addListener(ChannelFutureListener.CLOSE);
