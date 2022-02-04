@@ -59,6 +59,7 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
         HttpGet httpget = new HttpGet("http://localhost:8801");
         CloseableHttpResponse httpresponse = null;
         try {
+            System.out.println("fullRequest.uri() = "+fullRequest.uri());
             String value = body; // 对接上次作业的httpclient或者okhttp请求另一个url的响应数据
 
 //            httpGet ...  http://localhost:8801
