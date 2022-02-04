@@ -1,5 +1,6 @@
 package io.github.kimmking.gateway.inbound;
 
+import io.github.kimmking.gateway.filter.CustomedHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HeaderHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
 import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
@@ -18,6 +19,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     private final List<String> proxyServer;
     private HttpOutboundHandler handler;
     private HttpRequestFilter filter = new HeaderHttpRequestFilter();
+    private HttpRequestFilter filter01 = new CustomedHttpRequestFilter();
     
     public HttpInboundHandler(List<String> proxyServer) {
         this.proxyServer = proxyServer;
@@ -40,7 +42,8 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 //                handlerTest(fullRequest, ctx);
 //            }
     
-            handler.handle(fullRequest, ctx, filter);
+//            handler.handle(fullRequest, ctx, filter);
+            handler.handle(fullRequest, ctx, filter01);
     
         } catch(Exception e) {
             e.printStackTrace();

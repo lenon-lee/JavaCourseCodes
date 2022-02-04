@@ -3,11 +3,9 @@ package io.github.kimmking.gateway.filter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 
-public class HeaderHttpRequestFilter implements HttpRequestFilter {
-
+public class CustomedHttpRequestFilter implements HttpRequestFilter{
     @Override
     public void filter(FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
-        fullRequest.headers().set("mao", "soul");
-        fullRequest.headers().set("x-java", "lemon_lee");
+        fullRequest.headers().set("x-java", "lemon-lee-in");
     }
 }

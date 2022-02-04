@@ -1,6 +1,7 @@
 package io.github.kimmking.gateway.outbound.httpclient4;
 
 
+import io.github.kimmking.gateway.filter.CustomedHttpResponseFilter;
 import io.github.kimmking.gateway.filter.HeaderHttpResponseFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpResponseFilter;
@@ -38,7 +39,8 @@ public class HttpOutboundHandler {
     private ExecutorService proxyService;
     private List<String> backendUrls;
 
-    HttpResponseFilter filter = new HeaderHttpResponseFilter();
+//   HttpResponseFilter filter = new HeaderHttpResponseFilter();
+    HttpResponseFilter filter = new CustomedHttpResponseFilter();
     HttpEndpointRouter router = new RandomHttpEndpointRouter();
 
     public HttpOutboundHandler(List<String> backends) {
@@ -83,7 +85,8 @@ public class HttpOutboundHandler {
         final HttpGet httpGet = new HttpGet(url);
         //httpGet.setHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
         httpGet.setHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_KEEP_ALIVE);
-        httpGet.setHeader("mao", inbound.headers().get("mao"));
+//        httpGet.setHeader("mao", inbound.headers().get("mao"));
+        httpGet.setHeader("x=java", inbound.headers().get("x-java"));
 
         httpclient.execute(httpGet, new FutureCallback<HttpResponse>() {
             @Override
