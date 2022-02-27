@@ -19,6 +19,20 @@
         <property name="id" value="100" />
         <property name="name" value="KK100" />
     </bean>
+
+    <!-- 1、xml方式配置 bean = faculty2040-->
+    <bean id="faculty2040"
+          class="io.kimmking.spring01.Faculty">
+        <property name="id" value="2040" />
+        <property name="name" value="FF2040" />
+    </bean>
+
+    <!-- 2、xml方式配置 bean = faculty2080，使用@Resource注解注入到Klass实例(目前是class1)的属性teacher2080中-->
+    <bean id="faculty2080"
+          class="io.kimmking.spring01.Faculty">
+        <property name="id" value="2080" />
+        <property name="name" value="FF2080" />
+    </bean>
     
     <bean id="class1" class="io.kimmking.spring02.Klass">
         <property name="students">
@@ -30,6 +44,11 @@
 <!--                    <property name="id" value="001" /> -->
 <!--                </bean>-->
             </list>
+        </property>
+
+        <!-- 1、xml方式配置 bean = faculty2040，并装入bean = class1 的属性teacher中-->
+        <property name="teacher">
+            <ref bean="faculty2040" />
         </property>
     </bean>
     

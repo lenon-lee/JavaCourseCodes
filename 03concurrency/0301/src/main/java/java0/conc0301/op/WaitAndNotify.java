@@ -3,6 +3,7 @@ package java0.conc0301.op;
 public class WaitAndNotify {
     public static void main(String[] args) {
         MethodClass methodClass = new MethodClass();
+        MethodKlass methodKlass = new MethodKlass();
         Thread t1 = new Thread(() -> {
             try {
                 methodClass.product();
@@ -13,7 +14,7 @@ public class WaitAndNotify {
         }, "t1");
         Thread t2 = new Thread(() -> {
             try {
-                methodClass.customer();
+                methodKlass.customer();
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -46,7 +47,7 @@ class MethodClass {
             Thread.sleep(10);
             if (productCount >= MAX_COUNT) {
                 System.out.println("货舱已满,,.不必再生产");
-                
+
                 wait();
             }else {
                 productCount++;
@@ -70,4 +71,7 @@ class MethodClass {
             notifyAll();
         }
     }
+}
+class MethodKlass extends MethodClass {
+
 }

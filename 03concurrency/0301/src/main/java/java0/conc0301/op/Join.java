@@ -15,7 +15,7 @@ public class Join {
                 if (i == 20) {
                     try {
                         oo.wait(0);
-                        //thread1.join();
+//                        thread1.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -46,6 +46,8 @@ class MyThread extends Thread {
             for (int i = 0; i < 100; i++) {
                 System.out.println(name + i);
             }
+            // with synchronized(oo) and oo.wait(), run as wish using the next line.
+            oo.notifyAll();
         }
     }
     
